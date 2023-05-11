@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Upload a file</title>
+	<style>
+		/* add your CSS styles here */
+		body {
+			background-color: #f2f2f2;
+			font-family: Arial, sans-serif;
+		}
+		h2 {
+			color: #333;
+			margin-top: 20px;
+			margin-bottom: 10px;
+		}
+		form {
+			background-color: #fff;
+			border: 1px solid #ccc;
+			padding: 20px;
+			max-width: 500px;
+			margin: 0 auto;
+			box-shadow: 0px 0px 5px #ccc;
+		}
+		input[type="file"] {
+			padding: 10px;
+			margin-bottom: 10px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			background-color: #fff;
+			box-shadow: 0px 0px 5px #ccc;
+		}
+		button[type="submit"] {
+			padding: 10px;
+			background-color: #4CAF50;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+		button[type="submit"]:hover {
+			background-color: #3e8e41;
+		}
+	</style>
+</head>
+<body>
+	<h2>Upload a file</h2>
+	<form method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		<input type="file" name="document">
+		<button type="submit">Upload</button>
+	</form>
+</body>
+</html>
