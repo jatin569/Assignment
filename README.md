@@ -1,159 +1,146 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Decision Tree</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Decision Tree Page</title>
     <style>
-        /* Reset some default styles to ensure consistent appearance across browsers */
-        body, h1, p, ul, li {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-        
-        /* Add your custom styles below */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
-
         header {
-            background-color: #3498db;
+            background-color: #333;
             color: #fff;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
+            padding: 10px;
+            height: 50px;
         }
-
-        header img {
-            max-width: 100px;
-            height: auto;
+        #logo {
+            margin-left: 20px;
         }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li {
+        nav {
             margin-right: 20px;
         }
-
-        nav ul li a {
+        nav a {
             color: #fff;
             text-decoration: none;
+            margin: 0 20px;
         }
-
         .container {
-            max-width: 800px;
             margin: 20px auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: 2px solid #333;
+            padding: 15px;
+            max-width: 600px;
         }
-
         h1 {
             font-size: 24px;
-            margin-bottom: 20px;
         }
-
-        /* Add more CSS for buttons and styling as needed */
-        #decision-buttons {
+        .buttons {
+            margin: 20px 0;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-
-        button {
-            background-color: #3498db;
-            color: #fff;
-            border: none;
+        .button {
             padding: 10px 20px;
-            margin: 10px 0;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            display: block;
-        }
-
-        button:hover {
-            background-color: #2584c8;
-        }
-
-        #yes-no-container {
+            font-size: 16px;
+            margin: 5px;
             display: none;
         }
-
-        #yes-no-container button {
-            display: inline-block;
-            margin: 0 10px;
-        }
-        
-        #sub-decision-buttons {
-            display: none;
+        .horizontal-container {
+            display: flex;
+            margin-top:5px;
+            justify-content: space-between;
+            padding-top:2px;
         }
     </style>
 </head>
 <body>
     <header>
-        <!-- Company Logo -->
-        <img src="company_logo.png" alt="Company Logo" />
-
-        <!-- Navigation Links -->
+        <div id="logo">
+            <img src="company-logo.png" alt="Company Logo">
+        </div>
         <nav>
-            <ul>
-                <li><a href="/home">Home</a></li>
-                <li><a href="/about">About</a></li>
-                <!-- Add more navigation links as needed -->
-            </ul>
+            <a href="home.html">HOME</a>
+            <a href="products.html">Products</a>
+            <a href="login.html">LOGIN</a>
+            <a href="register.html">REGISTER</a>
         </nav>
     </header>
 
     <div class="container">
-        <h1>Decision Tree</h1>
+        <h1>Check Details</h1>
+        <div class="buttons">
+            <button class="button" id="button1">Button 1</button>
+            <button class="button" id="button2">Button 2</button>
+            <button class="button" id="button3">Button 3</button>
+            <button class="button" id="button4">Button 4</button>
+            <button class="button" id="button5">Button 5</button>
+            <button class="button" id="button6">Button 6</button>
+        </div>
 
-        <!-- Decision Tree Buttons -->
-        <div id="decision-buttons">
-            <button id="button-1" onclick="showNextButton('button-2')">Button 1</button>
-            <button id="button-2" style="display: none;" onclick="showNextButton('button-3')">Button 2</button>
-            <button id="button-3" style="display: none;" onclick="showNextButton('button-4')">Button 3</button>
-            <button id="button-4" style="display: none;" onclick="showNextButton('button-5')">Button 4</button>
-            <button id="button-5" style="display: none;" onclick="showYesNoButtons()">Button 5</button>
-            <div id="yes-no-container">
-                <button id="yes-button" onclick="showSubButtons('sub-button-1')">Yes</button>
-                <button id="no-button" onclick="showSubButtons('sub-button-6')">No</button>
-                <div id="sub-decision-buttons">
-                    <button id="sub-button-1" style="display: none;" onclick="showNextButton('sub-button-2')">Sub-Button 1</button>
-                    <button id="sub-button-2" style="display: none;" onclick="showNextButton('sub-button-3')">Sub-Button 2</button>
-                    <button id="sub-button-3" style="display: none;" onclick="showNextButton('sub-button-4')">Sub-Button 3</button>
-                    <button id="sub-button-4" style="display: none;" onclick="showNextButton('sub-button-5')">Sub-Button 4</button>
-                    <button id="sub-button-5" style="display: none;">Sub-Button 5</button>
-                    <button id="sub-button-6" style="display: none;">Sub-Button 6</button>
+        <div class="horizontal-container">
+            <div class="container" id="container1" style="display: none;">
+                <div class="buttons">
+                    <button class="button" id="container1-button1">Container1 Button 1</button>
+                    <button class="button" id="container1-button2">Container1 Button 2</button>
+                    <button class="button" id="container1-button3">Container1 Button 3</button>
+                    <button class="button" id="container1-button4">Container1 Button 4</button>
                 </div>
             </div>
-            <div id="button-6" style="display: none;">
-                <!-- Add buttons for the "Yes" and "No" branches of Button 6 -->
+
+            <div class="container" id="container2" style="display: none;">
+                <div class="buttons">
+                    <button class="button" id="container2-button1">Container2 Button 1</button>
+                    <button class="button" id="container2-button2">Container2 Button 2</button>
+                    <button class="button" id="container2-button3">Container2 Button 3</button>
+                    <button class="button" id="container2-button4">Container2 Button 4</button>
+                </div>
             </div>
-            <!-- Add more buttons and decision branches as needed -->
         </div>
     </div>
-
     <script>
-        // JavaScript function to show the next button
-        function showNextButton(buttonId) {
-            document.getElementById(buttonId).style.display = 'block';
+        const buttons = document.querySelectorAll('.button');
+        const button1 = document.getElementById('button1');
+        const button6 = document.getElementById('button6');
+        const container1 = document.getElementById('container1');
+        const container2 = document.getElementById('container2');
+    
+        button1.style.display = 'block';
+    
+        for (let i = 0; i < buttons.length - 1; i++) {
+            buttons[i].addEventListener('click', function () {
+                buttons[i + 1].style.display = 'block';
+                if (buttons[i + 1].id === 'button6') {
+                    container1.style.display = 'block';
+                    container2.style.display = 'block';
+                    document.getElementById('container1-button1').style.display = 'block';
+                    document.getElementById('container2-button1').style.display = 'block';
+                }
+            });
         }
-
-        // JavaScript function to show "Yes" and "No" buttons
-        function showYesNoButtons() {
-            document.getElementById('yes-no-container').style.display = 'block';
-        }
-
-        // JavaScript function to show the sub-decision buttons
-        function showSubButtons(subButtonId) {
-            document.getElementById(subButtonId).style.display = 'block';
-        }
+    
+        const container1Buttons = document.querySelectorAll('#container1 .button');
+        const container2Buttons = document.querySelectorAll('#container2 .button');
+    
+        // Disable Container2 buttons when Container1 buttons are clicked
+        container1Buttons.forEach((button, index) => {
+            button.addEventListener('click', () => {
+                container2Buttons[index].disabled = true;
+            });
+        });
+    
+        // Disable Container1 buttons when Container2 buttons are clicked
+        container2Buttons.forEach((button, index) => {
+            button.addEventListener('click', () => {
+                container1Buttons[index].disabled = true;
+            });
+        });
     </script>
 </body>
-</html>
+</html>    
