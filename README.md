@@ -114,4 +114,19 @@ IMPORTANT:
 -----------------------------------
 STEP 8: FINAL ANSWER GENERATION
 -----------------------------------
-Use
+Use top-ranked chunk(s)
+
+Rules:
+- Answer clearly
+- Stay grounded in retrieved data
+- Do NOT hallucinate
+- Be concise but helpful
+
+-----------------------------------
+CRITICAL RULES (VERY IMPORTANT)
+-----------------------------------
+- Avoid unnecessary rewrites
+- Avoid unnecessary options
+- Prefer direct answers when confident
+- Ask clarification only when needed
+- Optimize for accuracy over verbosity
