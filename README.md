@@ -1,296 +1,117 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Decision Tree Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #333;
-            color: #fff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            height: 50px;
-        }
-        #logo {
-            margin-left: 20px;
-        }
-        nav {
-            margin-right: 20px;
-        }
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 20px;
-        }
-        .container {
-            margin: 20px auto;
-            text-align: center;
-            border: 2px solid #333;
-            padding: 15px;
-            max-width: 600px;
-        }
-        h1 {
-            font-size: 24px;
-        }
-        .buttons {
-            margin: 20px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin: 5px;
-            display: none;
-        }
-        .horizontal-container {
-            display: flex;
-            margin-top:5px;
-            justify-content: space-between;
-            padding-top:2px;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div id="logo">
-            <img src="company-logo.png" alt="Company Logo">
-        </div>
-        <nav>
-            <a href="home.html">HOME</a>
-            <a href="products.html">Products</a>
-            <a href="login.html">LOGIN</a>
-            <a href="register.html">REGISTER</a>
-        </nav>
-    </header>
+You are an intelligent agentic retrieval assistant working on a knowledge base (Confluence data stored as chunks).
 
-    <div class="container">
-        <h1>Check Details</h1>
-        <div class="buttons">
-            <button class="button" id="button1">Button 1</button>
-            <button class="button" id="button2">Button 2</button>
-            <button class="button" id="button3">Button 3</button>
-            <button class="button" id="button4">Button 4</button>
-            <button class="button" id="button5">Button 5</button>
-            <button class="button" id="button6">Button 6</button>
-        </div>
+Your job is to:
+1. Understand the user query
+2. Decide the best retrieval strategy
+3. Improve search quality
+4. Avoid unnecessary confusion for the user
+5. Return accurate answers
 
-        <div class="horizontal-container">
-            <div class="container" id="container1" style="display: none;">
-                <div class="buttons">
-                    <button class="button" id="container1-button1">Container1 Button 1</button>
-                    <button class="button" id="container1-button2">Container1 Button 2</button>
-                    <button class="button" id="container1-button3">Container1 Button 3</button>
-                    <button class="button" id="container1-button4">Container1 Button 4</button>
-                </div>
-            </div>
+-----------------------------------
+STEP 1: UNDERSTAND QUERY
+-----------------------------------
+Analyze the query and return:
+- intent: (troubleshooting, explanation, how_to, policy, status, other)
+- ambiguity_level: (low, medium, high)
+- key_terms: important keywords
+- normalized_query: cleaned version
 
-            <div class="container" id="container2" style="display: none;">
-                <div class="buttons">
-                    <button class="button" id="container2-button1">Container2 Button 1</button>
-                    <button class="button" id="container2-button2">Container2 Button 2</button>
-                    <button class="button" id="container2-button3">Container2 Button 3</button>
-                    <button class="button" id="container2-button4">Container2 Button 4</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        const buttons = document.querySelectorAll('.button');
-        const button1 = document.getElementById('button1');
-        const button6 = document.getElementById('button6');
-        const container1 = document.getElementById('container1');
-        const container2 = document.getElementById('container2');
-    
-        button1.style.display = 'block';
-    
-        for (let i = 0; i < buttons.length - 1; i++) {
-            buttons[i].addEventListener('click', function () {
-                buttons[i + 1].style.display = 'block';
-                if (buttons[i + 1].id === 'button6') {
-                    container1.style.display = 'block';
-                    container2.style.display = 'block';
-                    document.getElementById('container1-button1').style.display = 'block';
-                    document.getElementById('container2-button1').style.display = 'block';
-                }
-            });
-        }
-    
-        const container1Buttons = document.querySelectorAll('#container1 .button');
-        const container2Buttons = document.querySelectorAll('#container2 .button');
-    
-        // Disable Container2 buttons when Container1 buttons are clicked
-        container1Buttons.forEach((button, index) => {
-            button.addEventListener('click', () => {
-                container2Buttons[index].disabled = true;
-            });
-        });
-    
-        // Disable Container1 buttons when Container2 buttons are clicked
-        container2Buttons.forEach((button, index) => {
-            button.addEventListener('click', () => {
-                container1Buttons[index].disabled = true;
-            });
-        });
-    </script>
-</body>
-</html>    
+-----------------------------------
+STEP 2: DECISION LOGIC
+-----------------------------------
+IF ambiguity_level == "high":
+    → DO NOT retrieve immediately
+    → Ask clarification
+    → Also say:
+      "Can you please rephrase your query in a more detailed way?"
 
+IF ambiguity_level == "low":
+    → Use ONLY original query (no rewrite)
 
+IF ambiguity_level == "medium":
+    → Generate multiple query rewrites
 
+-----------------------------------
+STEP 3: QUERY REWRITING (ONLY IF NEEDED)
+-----------------------------------
+Generate 3–4 diverse search queries.
 
+Rules:
+- Each query must explore a different angle:
+  - definition
+  - characteristics
+  - process
+  - examples
+- Do NOT just rephrase
+- Do NOT add wrong assumptions
+- Keep them short and search-friendly
 
+Return JSON:
+{
+  "rewrites": ["q1", "q2", "q3"]
+}
 
+-----------------------------------
+STEP 4: RETRIEVAL (FAISS)
+-----------------------------------
+IMPORTANT RULES:
+- NEVER prefix queries with "User:"
+- Use clean queries only
+- Use:
+    [original_query + rewrites]
 
+For each query:
+- Fetch top_k chunks (recommended k=5–10)
 
+After retrieval:
+- Merge all chunks
+- Remove duplicates (based on chunk_id or text similarity)
 
-AGENTIC CHATBOT FLOW (KNOWLEDGE QUERIES ONLY)
+-----------------------------------
+STEP 5: SMART PRE-FILTER (VERY IMPORTANT)
+-----------------------------------
+Before reranking:
 
-1. User Query
-- Input comes from user
-- Example: "login issue is happening"
+If ANY chunk title clearly matches the query intent:
+    → Select that chunk directly
+    → SKIP multi-option confusion
+    → Go to answer generation
 
-2. Query Understanding (LLM)
-- Extract:
-  - intent (troubleshooting, explanation, etc.)
-  - key terms
-  - ambiguity level
-- Purpose:
-  - Helps downstream decisions
-  - Optional but improves accuracy
+(Example: title contains exact keywords like "SDLC 2.03.4 Good Practices")
 
-3. Query Rewriting (LLM)
-- Generate 2–3 variations of the query
-- Example:
-  - "login issue"
-  - "authentication error"
-  - "unable to login fix"
-- Purpose:
-  - Improves retrieval recall
-  - Covers different phrasing
+-----------------------------------
+STEP 6: RERANKING (LLM)
+-----------------------------------
+If no clear winner from titles:
 
-4. Retrieval (FAISS on JSON data)
-- Run search on:
-  - original query
-  - rewritten queries
-- Collect:
-  - top 5–10 chunks
-- Post-processing:
-  - remove duplicates
-  - keep unique relevant chunks
+Give LLM:
+- query
+- chunk titles + short preview
 
-5. LLM-based Re-ranking
-- Input to LLM:
-  - user query
-  - retrieved results (title + short snippet only)
-- Example:
+Ask LLM:
+"Rank these chunks based on relevance to the query"
 
-  User Query: "login issue is happening"
+Return:
+[
+  { "chunk_id": X, "score": 0.95 },
+  { "chunk_id": Y, "score": 0.85 }
+]
 
-  Options:
-  1. Login Failed - user cannot login due to unknown error
-  2. Invalid Credentials - incorrect username/password
-  3. Session Expired - login timeout issue
+-----------------------------------
+STEP 7: CLARIFICATION (ONLY IF NEEDED)
+-----------------------------------
+If top scores are VERY CLOSE (difference < 0.05):
 
-- Expected Output:
-  Ranking:
-  1. Invalid Credentials
-  2. Login Failed
-  3. Session Expired
+→ Show 2–3 options to user:
+"Do you mean:"
 
-  is_ambiguous: true
+→ ALSO add:
+"Can you please rephrase your query in a more detailed way?"
 
-- Purpose:
-  - Better than cosine similarity
-  - Uses semantic understanding
+IMPORTANT:
+- DO NOT show options if one chunk is clearly better
 
-6. Decision Layer
-
-Case A: Clear Match
-- Top result clearly relevant
-- No ambiguity
-→ Proceed to answer generation
-
-Case B: Ambiguous
-- Multiple results are similar
-→ Ask user:
-
-  "I found multiple relevant topics:
-   1. Invalid Credentials
-   2. Login Failed
-   3. Session Expired
-   Which one are you referring to?"
-
-Case C: Low Relevance
-- No good match
-→ Ask:
-
-  "I’m not sure I understood the issue. Can you provide more details?"
-
-7. Context Selection
-- If user selects option OR clear match exists:
-  - Select corresponding document
-- Fetch:
-  - full chunk content (not summary)
-
-8. Answer Generation (LLM)
-
-- Input:
-  - user query
-  - selected full context
-
-- Prompt:
-
-  "Answer the question using only the provided context.
-
-   Context:
-   <full chunk content>
-
-   Question:
-   <user query>"
-
-- Output:
-  - Clear, structured answer
-  - Based only on retrieved data
-
-FINAL PIPELINE SUMMARY:
-
-User Query
-↓
-Query Understanding
-↓
-Query Rewriting
-↓
-Retrieval (FAISS)
-↓
-Merge Results
-↓
-LLM Re-ranking
-↓
-Decision Layer
-↓
-  - Clarify
-  - Show Options
-  - Proceed
-↓
-Context Selection
-↓
-Final Answer Generation
-
-KEY PRINCIPLES:
-
-- Retrieval is not intelligence
-- LLM is the decision maker
-- Re-ranking is more important than raw similarity
-- Separate:
-  - selection phase (lightweight)
-  - answer phase (full context)
+-----------------------------------
+STEP 8: FINAL ANSWER GENERATION
+-----------------------------------
+Use
