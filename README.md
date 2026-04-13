@@ -144,3 +144,153 @@
     </script>
 </body>
 </html>    
+
+
+
+
+
+
+
+
+
+AGENTIC CHATBOT FLOW (KNOWLEDGE QUERIES ONLY)
+
+1. User Query
+- Input comes from user
+- Example: "login issue is happening"
+
+2. Query Understanding (LLM)
+- Extract:
+  - intent (troubleshooting, explanation, etc.)
+  - key terms
+  - ambiguity level
+- Purpose:
+  - Helps downstream decisions
+  - Optional but improves accuracy
+
+3. Query Rewriting (LLM)
+- Generate 2–3 variations of the query
+- Example:
+  - "login issue"
+  - "authentication error"
+  - "unable to login fix"
+- Purpose:
+  - Improves retrieval recall
+  - Covers different phrasing
+
+4. Retrieval (FAISS on JSON data)
+- Run search on:
+  - original query
+  - rewritten queries
+- Collect:
+  - top 5–10 chunks
+- Post-processing:
+  - remove duplicates
+  - keep unique relevant chunks
+
+5. LLM-based Re-ranking
+- Input to LLM:
+  - user query
+  - retrieved results (title + short snippet only)
+- Example:
+
+  User Query: "login issue is happening"
+
+  Options:
+  1. Login Failed - user cannot login due to unknown error
+  2. Invalid Credentials - incorrect username/password
+  3. Session Expired - login timeout issue
+
+- Expected Output:
+  Ranking:
+  1. Invalid Credentials
+  2. Login Failed
+  3. Session Expired
+
+  is_ambiguous: true
+
+- Purpose:
+  - Better than cosine similarity
+  - Uses semantic understanding
+
+6. Decision Layer
+
+Case A: Clear Match
+- Top result clearly relevant
+- No ambiguity
+→ Proceed to answer generation
+
+Case B: Ambiguous
+- Multiple results are similar
+→ Ask user:
+
+  "I found multiple relevant topics:
+   1. Invalid Credentials
+   2. Login Failed
+   3. Session Expired
+   Which one are you referring to?"
+
+Case C: Low Relevance
+- No good match
+→ Ask:
+
+  "I’m not sure I understood the issue. Can you provide more details?"
+
+7. Context Selection
+- If user selects option OR clear match exists:
+  - Select corresponding document
+- Fetch:
+  - full chunk content (not summary)
+
+8. Answer Generation (LLM)
+
+- Input:
+  - user query
+  - selected full context
+
+- Prompt:
+
+  "Answer the question using only the provided context.
+
+   Context:
+   <full chunk content>
+
+   Question:
+   <user query>"
+
+- Output:
+  - Clear, structured answer
+  - Based only on retrieved data
+
+FINAL PIPELINE SUMMARY:
+
+User Query
+↓
+Query Understanding
+↓
+Query Rewriting
+↓
+Retrieval (FAISS)
+↓
+Merge Results
+↓
+LLM Re-ranking
+↓
+Decision Layer
+↓
+  - Clarify
+  - Show Options
+  - Proceed
+↓
+Context Selection
+↓
+Final Answer Generation
+
+KEY PRINCIPLES:
+
+- Retrieval is not intelligence
+- LLM is the decision maker
+- Re-ranking is more important than raw similarity
+- Separate:
+  - selection phase (lightweight)
+  - answer phase (full context)
